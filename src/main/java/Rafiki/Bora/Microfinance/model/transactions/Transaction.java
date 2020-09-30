@@ -1,6 +1,7 @@
 package Rafiki.Bora.Microfinance.model.transactions;
 
 import Rafiki.Bora.Microfinance.model.account.Account;
+import Rafiki.Bora.Microfinance.model.groups.Group;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -17,6 +18,12 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name="pan", nullable = false, referencedColumnName = "pan")
     private Account pan;
+
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="account_id", nullable = false, referencedColumnName = "account_id")
+    private Account account;
 
     @Column(name = "processing_code", columnDefinition = "VARCHAR(6)")
     private String processingCode;

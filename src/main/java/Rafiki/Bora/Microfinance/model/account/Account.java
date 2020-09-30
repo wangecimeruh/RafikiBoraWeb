@@ -1,17 +1,23 @@
 package Rafiki.Bora.Microfinance.model.account;
 
+import Rafiki.Bora.Microfinance.model.merchant.Merchant;
+import Rafiki.Bora.Microfinance.model.terminal.Terminal;
+import Rafiki.Bora.Microfinance.model.transactions.Transaction;
 import Rafiki.Bora.Microfinance.model.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="account_id")
     private int id;
 
     @Column(name = "name",nullable = false, columnDefinition = "VARCHAR(50)")
@@ -39,13 +45,28 @@ public class Account {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User maker;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "user_id")
     private User checker;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false, referencedColumnName = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy="account",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Transaction> transactions = new ArrayList<Transaction>();
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private Merchant merchant;
 
     public int getId() {
         return id;

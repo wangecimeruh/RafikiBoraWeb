@@ -17,12 +17,12 @@ public class Terminal {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User maker;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "user_id")
     private User checker;
 
     @Column(name = "is_deleted",nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
@@ -40,6 +40,11 @@ public class Terminal {
     @ManyToOne
     @JoinColumn(name="mid", nullable = false, referencedColumnName = "mid")
     private Merchant merchant;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false, referencedColumnName = "user_id")
+    private User user;
 
     public int getId() {
         return id;

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Agent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="agent_id")
     private int id;
 
     @Embedded
@@ -27,13 +27,18 @@ public class Agent {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User maker;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "user_id")
     private User checker;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false, referencedColumnName = "user_id")
+    private User user;
 
     public int getId() {
         return id;

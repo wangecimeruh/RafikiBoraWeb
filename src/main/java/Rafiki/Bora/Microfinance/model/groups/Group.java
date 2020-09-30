@@ -2,7 +2,9 @@ package Rafiki.Bora.Microfinance.model.groups;
 
 
 import Rafiki.Bora.Microfinance.model.roles.Role;
+import Rafiki.Bora.Microfinance.model.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,6 +41,14 @@ public class Group {
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     List<Role> roles = new ArrayList<Role>();
+
+
+    @OneToMany(mappedBy="group",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<User> user = new ArrayList<User>();
+
 
     public int getId() {
         return id;

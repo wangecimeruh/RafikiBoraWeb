@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="customer_id")
     private int id;
 
     @Embedded
@@ -24,18 +24,23 @@ public class Customer {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User maker;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "user_id")
     private User checker;
 
     @JsonBackReference
     @OneToOne
     @JoinColumn(name="account_number", nullable = false, referencedColumnName = "account_number")
     private Account account;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false, referencedColumnName = "user_id")
+    private User user;
 
     public int getId() {
         return id;
