@@ -1,7 +1,10 @@
 package Rafiki.Bora.Microfinance.model.roles;
 
+import Rafiki.Bora.Microfinance.model.groups.Group;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "roles")
@@ -25,6 +28,17 @@ public class Role {
     @Column(name = "date_updated", nullable = false, columnDefinition = "DATETIME")
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateUpdated;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<Group> groups;
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 
     public int getId() {
         return id;
