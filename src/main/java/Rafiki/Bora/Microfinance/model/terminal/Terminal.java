@@ -70,7 +70,7 @@ public class Terminal {
         this.checker = checker;
     }
 
-    public boolean isDeleted() {
+    public boolean isDeleted(Boolean isdeleted) {
         return isDeleted;
     }
 
