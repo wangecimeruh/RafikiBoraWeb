@@ -1,7 +1,6 @@
 package Rafiki.Bora.Microfinance.dao.groupsDao;
 
-import Rafiki.Bora.Microfinance.dao.customerDao.CustomerDaoI;
-import Rafiki.Bora.Microfinance.model.customers.Customer;
+
 import Rafiki.Bora.Microfinance.model.groups.Group;
 import org.springframework.stereotype.Repository;
 

@@ -2,7 +2,6 @@ package Rafiki.Bora.Microfinance.controllers.terminal;
 
 
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
-import Rafiki.Bora.Microfinance.service.agentService.AgentService;
 import Rafiki.Bora.Microfinance.service.terminalService.TerminalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

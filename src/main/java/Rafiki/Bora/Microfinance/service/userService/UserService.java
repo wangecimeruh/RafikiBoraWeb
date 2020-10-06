@@ -12,11 +12,11 @@ public class UserService {
 
     public void save(User user) throws Exception {
 
-        if (user.getPerson().getEmail().isEmpty()) {
-            dao.save(user);
-        } else {
-            System.out.println("User Already Exists!!");
-        }
+//        if (user.getEmail().isEmpty()) {
+//            dao.save(user);
+//        } else {
+//            System.out.println("User Already Exists!!");
+//        }
 
     }
 }

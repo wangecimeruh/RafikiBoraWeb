@@ -1,132 +1,113 @@
 package Rafiki.Bora.Microfinance.model.users;
 
-import Rafiki.Bora.Microfinance.model.Person;
 import Rafiki.Bora.Microfinance.model.account.Account;
-import Rafiki.Bora.Microfinance.model.agents.Agent;
-import Rafiki.Bora.Microfinance.model.customers.Customer;
 import Rafiki.Bora.Microfinance.model.groups.Group;
-import Rafiki.Bora.Microfinance.model.merchant.Merchant;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name="user_id", columnDefinition = "INT(10)")
     private int id;
 
-    @Embedded
-    private Person person;
+    @Column(name = "first_name",nullable = false, columnDefinition = "VARCHAR(15)")
+    private String firstName;
+
+    @Column(name = "last_name",nullable = false, columnDefinition = "VARCHAR(15)")
+    private String lastName;
+
+    @Column(name = "email",nullable = false, columnDefinition = "VARCHAR(50)")
+    private String email;
+
+    @Column(name = "password",nullable = false, columnDefinition = "VARCHAR(255)")
+    private String password;
+
+    @Column(name = "status",nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    private boolean status;
+
+    @Column(name = "mid", unique = true, columnDefinition = "VARCHAR(34)")
+    private String mid;
+
+    @Column(name = "business_name", columnDefinition = "VARCHAR(35)")
+    private String business_name;
+
+    @Column(name = "phone_no", nullable = false, columnDefinition = "VARCHAR(10)")
+    private String phone_no;
+
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1) DEFAULT 0")
+    private boolean isDeleted;
+
+    @Column(name = "date_created", updatable=false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date dateCreated;
+
+    @Column(name = "date_updated", columnDefinition = "DATETIME ON UPDATE CURRENT_TIMESTAMP")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date dateUpdated;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
-    private User maker;
+    private User userMaker;
+
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy="userMaker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JsonManagedReference
+//    private List<User> createdUsers = new ArrayList<>();
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="approved_by", nullable = false, referencedColumnName = "user_id")
-    private User checker;
+    @JoinColumn(name="approved_by", referencedColumnName = "user_id")
+    private User userChecker;
+
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy="userChecker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JsonManagedReference
+//    private List<User> approvedUsers = new ArrayList<>();
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="group_id", nullable = false, referencedColumnName = "group_id")
+    @JoinColumn(name="role_id", nullable = false, referencedColumnName = "role_id")
     private Group group;
 
+//    @OneToMany(mappedBy="terminalMaker", cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+//    @JsonManagedReference
+//    private List<Terminal> createdTerminals = new ArrayList<Terminal>();
+//
+//    @OneToMany(mappedBy="terminalChecker",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+//    @JsonManagedReference
+//    private List<Terminal> approvedTerminals = new ArrayList<Terminal>();
 
-    @OneToMany(mappedBy="user",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Terminal> terminal = new ArrayList<Terminal>();
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name="account_number", referencedColumnName = "account_id")
+    private Account userAccount;
 
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy="accountMaker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JsonManagedReference
+//    private List<Account> createdAccounts = new ArrayList<>();
 
-    @OneToMany(mappedBy="user",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Merchant> merchant = new ArrayList<Merchant>();
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy="accountChecker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JsonManagedReference
+//    private List<Account> approvedAccounts = new ArrayList<>();
 
-    @OneToMany(mappedBy="user",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Account> accounts = new ArrayList<Account>();
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "Agents_Terminals",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "terminal_id") }
+    )
+    List<Terminal> assignedTerminals = new ArrayList<Terminal>();
 
-    @OneToMany(mappedBy="user",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Customer> customer = new ArrayList<Customer>();
-
-    @OneToMany(mappedBy="user",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Agent> agent = new ArrayList<Agent>();
-
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public List<Terminal> getTerminal() {
-        return terminal;
-    }
-
-    public void setTerminal(List<Terminal> terminal) {
-        this.terminal = terminal;
-    }
-
-    public List<Merchant> getMerchant() {
-        return merchant;
-    }
-
-    public void setMerchant(List<Merchant> merchant) {
-        this.merchant = merchant;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public User getMaker() {
-        return maker;
-    }
-
-    public void setMaker(User maker) {
-        this.maker = maker;
-    }
-
-    public User getChecker() {
-        return checker;
-    }
-
-    public void setChecker(User checker) {
-        this.checker = checker;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
 }
+
+
+

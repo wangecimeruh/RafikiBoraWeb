@@ -1,7 +1,7 @@
 package Rafiki.Bora.Microfinance.model.transactions;
 
 import Rafiki.Bora.Microfinance.model.account.Account;
-import Rafiki.Bora.Microfinance.model.groups.Group;
+import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -11,79 +11,121 @@ import java.util.Date;
 @Table(name = "transactions")
 public class Transaction {
     @Id
-    @Column(name="reference_no", columnDefinition = "VARCHAR(12)")
+    @Column(name="transaction_id", columnDefinition = "INT(10)")
     private int id;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="pan", nullable = false, referencedColumnName = "pan")
-    private Account pan;
-
+    @JoinColumn(name="source_account", referencedColumnName = "account_number")
+    private Account sourceAccount;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="account_id", nullable = false, referencedColumnName = "account_id")
-    private Account account;
+    @JoinColumn(name="destination_account", referencedColumnName = "account_number")
+    private Account destinationAccount;
 
-    @Column(name = "processing_code", columnDefinition = "VARCHAR(6)")
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="tid", nullable = false, referencedColumnName = "tid")
+    private Terminal terminal;
+
+    @Column(name = "processing_code", nullable=false, columnDefinition = "VARCHAR(6)")
     private String processingCode;
 
-    @Column(name = "amount_transaction",columnDefinition = "DOUBLE(12,2)")
+    @Column(name = "token", columnDefinition = "VARCHAR(10)")
+    private String token;
+
+    @Column(name = "amount_transaction", nullable=false, columnDefinition = "DOUBLE(12,2)")
     private double amountTransaction;
 
-    @Column(name = "amount_reconciliation",columnDefinition = "DOUBLE(12,2)")
-    private double amountReconciliation;
-
-    @Column(name = "amount_cardholder_billing",columnDefinition = "DOUBLE(12,2)")
-    private double amountCardholderBilling;
-
-    @Column(name = "amount_transaction_currency_code",columnDefinition = "VARCHAR(3)")
+    @Column(name = "amount_transaction_currency_code", nullable=false, columnDefinition = "VARCHAR(3)")
     private String amountTransactionCurrencyCode;
 
-    @Column(name = "amount_reconciliation_currency_code",columnDefinition = "VARCHAR(3)")
-    private String amountReconciliationCurrencyCode;
-
-    @Column(name = "amount_cardholder_billing_currency_code",columnDefinition = "VARCHAR(3)")
-    private String amountCardholderBillingCurrencyCode;
-
-    @Column(name = "date_time_transmission", updatable=false, columnDefinition = "DATETIME")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date dateTimeTransmission;
-
-    @Column(name = "stan",columnDefinition = "INT(12)")
-    private int stan;
-
-    @Column(name = "date_time_local_transaction", updatable=false, columnDefinition = "DATETIME")
+    @Column(name = "date_time_local_transaction", updatable=false, nullable=false, columnDefinition = "DATETIME")
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateTimeLocalTransaction;
-
-    @Column(name = "expiration_date",columnDefinition = "INT(4)")
-    private int expirationDate;
-
-    @Column(name = "settlement_date",columnDefinition = "INT(8)")
-    private int settlementDate;
-
-    @Column(name = "capture_date",columnDefinition = "INT(4)")
-    private int captureDate;
-
-    @Column(name = "acquiring_institution_code",columnDefinition = "INT(11)")
-    private int acquiringInstitutionCode;
-
-    @Column(name = "approval_code",columnDefinition = "VARCHAR(6)")
-    private String approvalCode;
 
     @Column(name = "result_code",columnDefinition = "VARCHAR(6)")
     private String resultCode;
 
-    @Column(name = "tid",columnDefinition = "VARCHAR(16)")
-    private String tid;
 
-    @Column(name = "mid",columnDefinition = "VARCHAR(34)")
-    private String mid;
+    public int getId() {
+        return id;
+    }
 
-    @Column(name = "source_account",columnDefinition = "VARCHAR(28)")
-    private String sourceAccount;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    @Column(name = "destination_account",columnDefinition = "VARCHAR(28)")
-    private String destinationAccount;
+    public Account getSourceAccount() {
+        return sourceAccount;
+    }
+
+    public void setSourceAccount(Account sourceAccount) {
+        this.sourceAccount = sourceAccount;
+    }
+
+    public Account getDestinationAccount() {
+        return destinationAccount;
+    }
+
+    public void setDestinationAccount(Account destinationAccount) {
+        this.destinationAccount = destinationAccount;
+    }
+
+    public Terminal getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(Terminal terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getProcessingCode() {
+        return processingCode;
+    }
+
+    public void setProcessingCode(String processingCode) {
+        this.processingCode = processingCode;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public double getAmountTransaction() {
+        return amountTransaction;
+    }
+
+    public void setAmountTransaction(double amountTransaction) {
+        this.amountTransaction = amountTransaction;
+    }
+
+    public String getAmountTransactionCurrencyCode() {
+        return amountTransactionCurrencyCode;
+    }
+
+    public void setAmountTransactionCurrencyCode(String amountTransactionCurrencyCode) {
+        this.amountTransactionCurrencyCode = amountTransactionCurrencyCode;
+    }
+
+    public Date getDateTimeLocalTransaction() {
+        return dateTimeLocalTransaction;
+    }
+
+    public void setDateTimeLocalTransaction(Date dateTimeLocalTransaction) {
+        this.dateTimeLocalTransaction = dateTimeLocalTransaction;
+    }
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
+    }
 }
