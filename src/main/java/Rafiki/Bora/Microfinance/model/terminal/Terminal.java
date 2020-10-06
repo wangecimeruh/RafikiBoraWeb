@@ -54,69 +54,11 @@ public class Terminal {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateUpdated;
 
-<<<<<<< HEAD
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedTerminals", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JsonManagedReference
-    private List<User> users = new ArrayList<User>();
-=======
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name="mid", nullable = false, referencedColumnName = "mid")
-    private Merchant merchant;
-
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false, referencedColumnName = "user_id")
     private User user;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getMaker() {
-        return maker;
-    }
-
-    public void setMaker(User maker) {
-        this.maker = maker;
-    }
-
-    public User getChecker() {
-        return checker;
-    }
-
-    public void setChecker(User checker) {
-        this.checker = checker;
-    }
-
-    public boolean isDeleted(Boolean isdeleted) {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public Date getDateUpdated() {
-        return dateUpdated;
-    }
-
-    public void setDateUpdated(Date dateUpdated) {
-        this.dateUpdated = dateUpdated;
-    }
->>>>>>> 784d49031012d117bd596907acc8de856fe135fa
 
     @OneToMany(mappedBy="terminal",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonManagedReference
