@@ -2,13 +2,18 @@ package Rafiki.Bora.Microfinance.model.groups;
 
 import Rafiki.Bora.Microfinance.model.users.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "roles")
 public class Group {

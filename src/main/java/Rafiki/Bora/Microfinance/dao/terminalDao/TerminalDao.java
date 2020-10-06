@@ -1,6 +1,5 @@
 package Rafiki.Bora.Microfinance.dao.terminalDao;
 
-import Rafiki.Bora.Microfinance.model.merchant.Merchant;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import Rafiki.Bora.Microfinance.model.users.User;
 import org.apache.commons.lang3.StringUtils;

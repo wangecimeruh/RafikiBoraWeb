@@ -4,12 +4,18 @@ import Rafiki.Bora.Microfinance.model.account.Account;
 import Rafiki.Bora.Microfinance.model.groups.Group;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "users")
 public class User {

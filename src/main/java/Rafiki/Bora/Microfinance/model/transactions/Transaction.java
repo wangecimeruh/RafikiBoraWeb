@@ -3,10 +3,17 @@ package Rafiki.Bora.Microfinance.model.transactions;
 import Rafiki.Bora.Microfinance.model.account.Account;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "transactions")
 public class Transaction {
