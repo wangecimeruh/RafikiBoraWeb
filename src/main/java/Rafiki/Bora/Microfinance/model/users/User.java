@@ -1,7 +1,7 @@
 package Rafiki.Bora.Microfinance.model.users;
 
+import Rafiki.Bora.Microfinance.config.security.dto.UserSummary;
 import Rafiki.Bora.Microfinance.model.account.Account;
-import Rafiki.Bora.Microfinance.model.groups.Group;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
@@ -9,21 +9,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id", columnDefinition = "INT(10)")
-    private int id;
+    private Long userId;
 
     @Column(name = "first_name",nullable = false, columnDefinition = "VARCHAR(15)")
     private String firstName;
@@ -74,14 +77,32 @@ public class User {
     @JoinColumn(name="approved_by", referencedColumnName = "user_id")
     private User userChecker;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "roleId")})
+    private Set<Roles> roles;
+
+    public UserSummary toUserSummary() {
+        UserSummary userSummary = new UserSummary();
+        userSummary.setEmail(this.email);
+        userSummary.setUserId(this.userId);
+        return userSummary;
+    }
+
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy="userChecker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 //    @JsonManagedReference
 //    private List<User> approvedUsers = new ArrayList<>();
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name="role_id", nullable = false, referencedColumnName = "role_id")
-    private Group group;
+//    @JsonBackReference
+//    @ManyToOne
+//    @JoinColumn(name="role_id", nullable = false, referencedColumnName = "role_id")
+//    private Group group;
 
 //    @OneToMany(mappedBy="terminalMaker", cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 //    @JsonManagedReference

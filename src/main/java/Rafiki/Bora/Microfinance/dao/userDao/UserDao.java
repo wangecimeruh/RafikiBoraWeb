@@ -12,12 +12,18 @@ public class UserDao implements UserDaoI {
     private EntityManager em;
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
 
-        em.merge(user);
+        return em.merge(user);
     }
+
     @Override
-    public void delete(User user) {
-        em.remove(user);
+    public User login(String email, String password) {
+        User user = null;
+        String query = "SELECT u FROM User u WHERE u.email=:email";
+        user = (User) this.em.createQuery(query)
+                .setParameter("email", email).getSingleResult();
+        return user;
     }
+
 }

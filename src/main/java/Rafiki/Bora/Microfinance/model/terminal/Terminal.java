@@ -31,6 +31,12 @@ public class Terminal {
     @Column(name = "tid",nullable = false, unique = true, columnDefinition = "VARCHAR(16)")
     private String tid;
 
+    @Column(name = "serial_no",nullable = false, unique = true, columnDefinition = "VARCHAR(28)")
+    private String serialNo;
+
+    @Column(name = "model_type",nullable = false, columnDefinition = "VARCHAR(10)")
+    private String modelType;
+
     @Column(name = "status", columnDefinition = "TINYINT(1) DEFAULT 0")
     private boolean status;
 
