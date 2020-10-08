@@ -29,7 +29,7 @@ import java.util.Properties;
 @ComponentScan("Rafiki.Bora.Microfinance.dao")
 @ComponentScan("Rafiki.Bora.Microfinance.model")
 //scan the annotated components
-@EnableJpaRepositories(basePackages = "Rafiki.Bora.Microfinance.dao")
+@EnableJpaRepositories(basePackages = "Rafiki.Bora.Microfinance.rbm.dao")
 //scan class of the annotated class
 public class PersistenceCMTConfig {
 
@@ -40,7 +40,7 @@ public class PersistenceCMTConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("Rafiki.Bora.Microfinance.model");
+        em.setPackagesToScan("Rafiki.Bora.Microfinance.rbm.model");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(additionalProperties());
         return em;
@@ -64,7 +64,7 @@ public class PersistenceCMTConfig {
     final Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
 
-        // Database connection settings
+        //Database connection settings
         hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
         hibernateProperties.setProperty("hibernate.integration.envers.enabled", env.getProperty("hibernate.integration.envers.enabled"));
         //hibernateProperties.setProperty("hibernate.archive.autodetection", env.getProperty("hibernate.archive.autodetection"));

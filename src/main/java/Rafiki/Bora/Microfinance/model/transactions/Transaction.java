@@ -3,16 +3,18 @@ package Rafiki.Bora.Microfinance.model.transactions;
 import Rafiki.Bora.Microfinance.model.account.Account;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 
+<<<<<<< Updated upstream
 @Data
+=======
+
+>>>>>>> Stashed changes
 @Entity
 @Table(name = "transactions")
 public class Transaction implements Serializable {
@@ -54,4 +56,86 @@ public class Transaction implements Serializable {
     @Column(name = "result_code",columnDefinition = "VARCHAR(6)")
     private String resultCode;
 
+<<<<<<< Updated upstream
+=======
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Account getSourceAccount() {
+        return sourceAccount;
+    }
+
+    public void setSourceAccount(Account sourceAccount) {
+        this.sourceAccount = sourceAccount;
+    }
+
+    public Account getDestinationAccount() {
+        return destinationAccount;
+    }
+
+    public void setDestinationAccount(Account destinationAccount) {
+        this.destinationAccount = destinationAccount;
+    }
+
+    public Terminal getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(Terminal terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getProcessingCode() {
+        return processingCode;
+    }
+
+    public void setProcessingCode(String processingCode) {
+        this.processingCode = processingCode;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public double getAmountTransaction() {
+        return amountTransaction;
+    }
+
+    public void setAmountTransaction(double amountTransaction) {
+        this.amountTransaction = amountTransaction;
+    }
+
+    public String getAmountTransactionCurrencyCode() {
+        return amountTransactionCurrencyCode;
+    }
+
+    public void setAmountTransactionCurrencyCode(String amountTransactionCurrencyCode) {
+        this.amountTransactionCurrencyCode = amountTransactionCurrencyCode;
+    }
+
+    public Date getDateTimeLocalTransaction() {
+        return dateTimeLocalTransaction;
+    }
+
+    public void setDateTimeLocalTransaction(Date dateTimeLocalTransaction) {
+        this.dateTimeLocalTransaction = dateTimeLocalTransaction;
+    }
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
+    }
+>>>>>>> Stashed changes
 }
