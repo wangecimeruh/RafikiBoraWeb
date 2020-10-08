@@ -4,6 +4,7 @@ import Rafiki.Bora.Microfinance.config.security.dto.UserSummary;
 import Rafiki.Bora.Microfinance.model.account.Account;
 import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
@@ -47,10 +46,10 @@ public class User implements Serializable {
     private String mid;
 
     @Column(name = "business_name", columnDefinition = "VARCHAR(35)")
-    private String business_name;
+    private String businessName;
 
     @Column(name = "phone_no", nullable = false, columnDefinition = "VARCHAR(10)")
-    private String phone_no;
+    private String phoneNo;
 
     @Column(name = "is_deleted", columnDefinition = "TINYINT(1) DEFAULT 0")
     private boolean isDeleted;
@@ -63,16 +62,12 @@ public class User implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateUpdated;
 
-    @JsonBackReference
+    @JsonBackReference(value = "createdBy_u")
     @ManyToOne
     @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User userMaker;
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy="userMaker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JsonManagedReference
-//    private List<User> createdUsers = new ArrayList<>();
-
-    @JsonBackReference
+    @JsonBackReference(value = "approved_by_u")
     @ManyToOne
     @JoinColumn(name="approved_by", referencedColumnName = "user_id")
     private User userChecker;
@@ -95,37 +90,11 @@ public class User implements Serializable {
         return userSummary;
     }
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy="userChecker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JsonManagedReference
-//    private List<User> approvedUsers = new ArrayList<>();
-
-//    @JsonBackReference
-//    @ManyToOne
-//    @JoinColumn(name="role_id", nullable = false, referencedColumnName = "role_id")
-//    private Group group;
-
-//    @OneToMany(mappedBy="terminalMaker", cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-//    @JsonManagedReference
-//    private List<Terminal> createdTerminals = new ArrayList<Terminal>();
-//
-//    @OneToMany(mappedBy="terminalChecker",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-//    @JsonManagedReference
-//    private List<Terminal> approvedTerminals = new ArrayList<Terminal>();
-
-    @JsonBackReference
+    @JsonBackReference(value = "account_number_u")
     @OneToOne
     @JoinColumn(name="account_number", referencedColumnName = "account_id")
     private Account userAccount;
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy="accountMaker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JsonManagedReference
-//    private List<Account> createdAccounts = new ArrayList<>();
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy="accountChecker", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JsonManagedReference
-//    private List<Account> approvedAccounts = new ArrayList<>();
-
-    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "Agents_Terminals",

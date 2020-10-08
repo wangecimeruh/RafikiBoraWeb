@@ -8,30 +8,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "transactions")
-public class Transaction {
+public class Transaction implements Serializable {
     @Id
     @Column(name="transaction_id", columnDefinition = "INT(10)")
     private int id;
 
-    @JsonBackReference
+    @JsonBackReference(value = "source_account_t")
     @ManyToOne
     @JoinColumn(name="source_account", referencedColumnName = "account_number")
     private Account sourceAccount;
 
-    @JsonBackReference
+    @JsonBackReference(value = "destination_account_t")
     @ManyToOne
     @JoinColumn(name="destination_account", referencedColumnName = "account_number")
     private Account destinationAccount;
 
-    @JsonBackReference
+    @JsonBackReference(value = "tid_t")
     @ManyToOne
     @JoinColumn(name="tid", nullable = false, referencedColumnName = "tid")
     private Terminal terminal;
@@ -55,84 +54,4 @@ public class Transaction {
     @Column(name = "result_code",columnDefinition = "VARCHAR(6)")
     private String resultCode;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Account getSourceAccount() {
-        return sourceAccount;
-    }
-
-    public void setSourceAccount(Account sourceAccount) {
-        this.sourceAccount = sourceAccount;
-    }
-
-    public Account getDestinationAccount() {
-        return destinationAccount;
-    }
-
-    public void setDestinationAccount(Account destinationAccount) {
-        this.destinationAccount = destinationAccount;
-    }
-
-    public Terminal getTerminal() {
-        return terminal;
-    }
-
-    public void setTerminal(Terminal terminal) {
-        this.terminal = terminal;
-    }
-
-    public String getProcessingCode() {
-        return processingCode;
-    }
-
-    public void setProcessingCode(String processingCode) {
-        this.processingCode = processingCode;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public double getAmountTransaction() {
-        return amountTransaction;
-    }
-
-    public void setAmountTransaction(double amountTransaction) {
-        this.amountTransaction = amountTransaction;
-    }
-
-    public String getAmountTransactionCurrencyCode() {
-        return amountTransactionCurrencyCode;
-    }
-
-    public void setAmountTransactionCurrencyCode(String amountTransactionCurrencyCode) {
-        this.amountTransactionCurrencyCode = amountTransactionCurrencyCode;
-    }
-
-    public Date getDateTimeLocalTransaction() {
-        return dateTimeLocalTransaction;
-    }
-
-    public void setDateTimeLocalTransaction(Date dateTimeLocalTransaction) {
-        this.dateTimeLocalTransaction = dateTimeLocalTransaction;
-    }
-
-    public String getResultCode() {
-        return resultCode;
-    }
-
-    public void setResultCode(String resultCode) {
-        this.resultCode = resultCode;
-    }
 }

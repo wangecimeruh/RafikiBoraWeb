@@ -2,6 +2,7 @@ package Rafiki.Bora.Microfinance.model.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "roles")
 public class Roles implements Serializable {
     @Id

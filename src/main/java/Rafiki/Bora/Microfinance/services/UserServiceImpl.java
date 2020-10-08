@@ -3,16 +3,25 @@ package Rafiki.Bora.Microfinance.services;
 import Rafiki.Bora.Microfinance.config.security.dto.*;
 import Rafiki.Bora.Microfinance.config.security.util.CookieUtil;
 import Rafiki.Bora.Microfinance.dao.repository.UserRepository;
+import Rafiki.Bora.Microfinance.model.users.Roles;
 import Rafiki.Bora.Microfinance.model.users.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
@@ -88,6 +97,25 @@ public class UserServiceImpl implements UserService {
         LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
+
+    @Override
+    public User save(UserDto user) throws NullPointerException{
+        User newUser = new User();
+        try{
+            newUser.setFirstName(user.getFirstName());
+            newUser.setLastName(user.getLastName());
+            newUser.setEmail(user.getEmail());
+            newUser.setPhoneNo(user.getPhoneNo());
+            newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            log.info("***********************");
+            log.info("The Data here is:", user);
+            log.info("***********************");
+        }catch (NullPointerException nullPointerException){
+           log.error(nullPointerException.getMessage());
+        }
+        return userRepository.save(newUser);
+    }
+
 
     @Override
     public UserSummary getUserProfile() {

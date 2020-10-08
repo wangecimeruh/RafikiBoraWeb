@@ -13,16 +13,15 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "terminals")
-public class Terminal {
+public class Terminal implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="terminal_id", columnDefinition = "INT(10)")
@@ -40,17 +39,17 @@ public class Terminal {
     @Column(name = "status", columnDefinition = "TINYINT(1) DEFAULT 0")
     private boolean status;
 
-    @JsonBackReference
+    @JsonBackReference(value = "mid_t")
     @ManyToOne
     @JoinColumn(name="mid", referencedColumnName = "mid")
     private User merchant;
 
-    @JsonBackReference
+    @JsonBackReference(value = "created_by_t")
     @ManyToOne
     @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User terminalMaker;
 
-    @JsonBackReference
+    @JsonBackReference(value = "approved_by_t")
     @ManyToOne
     @JoinColumn(name="approved_by", referencedColumnName = "user_id")
     private User terminalChecker;
@@ -66,14 +65,14 @@ public class Terminal {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateUpdated;
 
-    @JsonBackReference
+    @JsonBackReference(value = "user_id_t")
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false, referencedColumnName = "user_id")
     private User user;
 
 
     @OneToMany(mappedBy="terminal",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "tid_t")
     private List<Transaction> transactions = new ArrayList<Transaction>();
 
 }

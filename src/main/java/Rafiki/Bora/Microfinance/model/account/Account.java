@@ -1,7 +1,6 @@
 package Rafiki.Bora.Microfinance.model.account;
 
 
-import Rafiki.Bora.Microfinance.model.terminal.Terminal;
 import Rafiki.Bora.Microfinance.model.transactions.Transaction;
 import Rafiki.Bora.Microfinance.model.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "accounts")
@@ -50,17 +47,17 @@ public class Account implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateUpdated;
 
-    @JsonBackReference
+    @JsonBackReference(value = "created_by_a")
     @ManyToOne
     @JoinColumn(name="created_by", nullable = false, referencedColumnName = "user_id")
     private User accountMaker;
 
-    @JsonBackReference
+    @JsonBackReference(value = "approved_by_a")
     @ManyToOne
     @JoinColumn(name="approved_by", referencedColumnName = "user_id")
     private User accountChecker;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "account_number_u")
     @OneToOne(mappedBy="userAccount",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private User user;
 
@@ -71,10 +68,10 @@ public class Account implements Serializable {
     private double balance;
 
     @OneToMany(mappedBy="sourceAccount",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "source_account_t")
     private List<Transaction> withdrawals = new ArrayList<Transaction>();
 
     @OneToMany(mappedBy="destinationAccount",cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "destination_account_t")
     private List<Transaction> deposits = new ArrayList<Transaction>();
 }
